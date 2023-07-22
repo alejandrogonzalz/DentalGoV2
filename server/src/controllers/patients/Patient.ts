@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import '../../types/index.d.ts';
 
 interface IPatient {
   name: string;

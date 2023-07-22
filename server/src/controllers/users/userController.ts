@@ -1,19 +1,6 @@
 import { Request, Response } from 'express';
 import { User } from './User';
 import bcrypt from 'bcrypt';
-// import '../../index.d.ts';
-
-declare module 'express-session' {
-  // Extend the SessionData interface
-  interface SessionData {
-    passport?: {
-      user: {
-        userType: { [key: string]: number }; // Define the type of userType
-        [key: string]: any; // Allow any additional properties if needed
-      };
-    };
-  }
-}
 
 export const handleNewUser = async (req: Request, res: Response) => {
   const { name, email, password, userType } = req.body;
@@ -25,7 +12,7 @@ export const handleNewUser = async (req: Request, res: Response) => {
   }
 
   // Check if the user is authorized and if role exists
-  if (req.isAuthenticated() && role) {
+  if (req.isAuthenticated() && role.User === 0 && role.Admin === 1) {
     // check for duplicate emails in the db
     const duplicate = await User.findOne({ email }).exec();
     if (duplicate) {

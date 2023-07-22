@@ -1,7 +1,8 @@
 import 'express-session';
+// import { Types } from 'mongoose';
 
-declare global {
-  // Extend the SessionData interface
+// Interface extension of SessionData
+declare module 'express-session' {
   interface SessionData {
     passport?: {
       user: {
@@ -10,13 +11,31 @@ declare global {
       };
     };
   }
-  interface IUser {
-    name: string;
-    email: string;
-    password: string;
-    userType: {
-      User: number;
-      Admin: number;
-    };
-  }
 }
+
+// global declarations
+// declare global {
+//   interface IUser {
+//     name: string;
+//     email: string;
+//     password: string;
+//     userType: {
+//       User: number;
+//       Admin: number;
+//     };
+//   }
+//   interface IPatient {
+//     name: string;
+//     mobile: number;
+//   }
+
+//   interface ITreatment {
+//     appointmentId: Types.ObjectId;
+//     description: string;
+//   }
+//   interface IAppointment {
+//     userId: Types.ObjectId;
+//     patientId: Types.ObjectId;
+//     appointmentDate: Date;
+//   }
+// }

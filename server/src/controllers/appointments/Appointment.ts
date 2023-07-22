@@ -5,12 +5,10 @@ interface IAppointment {
   patientId: Types.ObjectId;
   appointmentDate: Date;
 }
+
 const appointmentSchema = new Schema<IAppointment>({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   patientId: { type: Schema.Types.ObjectId, ref: 'Patient' },
 });
 
-export const Appointment = model<IAppointment>(
-  'Appointment',
-  appointmentSchema,
-);
+export const Appointment = model<IAppointment>('Appointment', appointmentSchema);
