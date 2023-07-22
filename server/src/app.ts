@@ -1,31 +1,37 @@
-import express from 'express'
-import cors from 'cors'
-import morgan from 'morgan'
+// libraries
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
 import mongoose from 'mongoose';
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
+import passport from 'passport';
 
-import connectDB from './services/database'
+import router from './router';
+import connectDB from './services/database';
 
-const app = express()
-app.use(morgan('dev'))
-app.use(cors({origin: ['http://localhost:5173'], credentials: true}))
-app.use(express.json())
+import { sessionConfig } from './controllers/auth/authController';
 
 const PORT = process.env.PORT || 3000;
-dotenv.config()
+const app = express();
+dotenv.config();
+connectDB();
+// -------------------- Middlewares -------------------- //
+app.use(morgan('dev'));
+app.use(cors({ origin: [`${process.env.FRONTEND_URI}`], credentials: true }));
+app.use(express.json());
+// passport js
+app.use(sessionConfig);
+app.use(passport.initialize());
+app.use(passport.session());
 
-connectDB()
+// -------------------- Routes -------------------- //
+app.use('/api', router);
 
-app.get('/ping', (_req, res) => {
-    console.log('someone pinged here!')
-    res.send('pong')
-})
-
-mongoose.connection.once('open', ()=>{
-    console.clear()
-    console.log('Connected to MongoDB')
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`)
-    })
-})
-
+// -------------------- DB connection -------------------- //
+mongoose.connection.once('open', () => {
+  console.clear();
+  console.log('Connected to MongoDB');
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+});

@@ -1,14 +1,13 @@
-import mongoose, {ConnectOptions} from "mongoose";
+import mongoose, { ConnectOptions } from 'mongoose';
 
-// const URL = process.env.DATABASE_URI
-const connectDB = async () =>{
-    try { 
-        await mongoose.connect(`${process.env.DATABASE_URI}`,{
-            useNewUrlParser: true,
-        } as ConnectOptions)
-    } catch (err) {
-        console.error(err)
-    }
-}
+const connectDB = async () => {
+  try {
+    await mongoose.connect(`${process.env.DATABASE_URI}`, {
+      useNewUrlParser: true,
+    } as ConnectOptions);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-export default connectDB
+export default connectDB;
