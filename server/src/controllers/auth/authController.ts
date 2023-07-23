@@ -4,6 +4,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { User } from '../users/User';
 import bcrypt from 'bcrypt';
 import session from 'express-session';
+import { ExtendedUser } from '../../types';
 
 export const sessionConfig = session({
   secret: `${process.env.SECRET}`,
@@ -52,14 +53,14 @@ export const protect = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.status(401).json();
+  res.status(401).json({ message: 'Unauthorized' });
 };
 
 export const router = Router();
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
-  // console.log('isAuthenticated:', req.isAuthenticated());
-  res.json({ user: req.user });
+  const { userType, name, email, _id } = (req?.user as ExtendedUser) || {};
+  res.json({ user: { userType, name, email, _id } });
 });
 
 router.delete('/logout', protect, (req, res) => {
@@ -67,6 +68,7 @@ router.delete('/logout', protect, (req, res) => {
   res.json({ message: 'Logout succesfully' });
 });
 
+// borrar luego por cuestiones de seguridad
 router.get('/who-am-i', protect, (req, res) => {
   res.json({ user: req.user });
 });

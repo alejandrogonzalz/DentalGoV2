@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv';
 import passport from 'passport';
 
 import router from './router';
-import connectDB from './services/database';
+import connectDB from './model/database';
 
 import { sessionConfig } from './controllers/auth/authController';
 
